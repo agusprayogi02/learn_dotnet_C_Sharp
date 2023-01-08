@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Canteen.Models;
+namespace Canteen.Controllers;
 
 public class ErrorController : ControllerBase
 {

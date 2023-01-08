@@ -1,14 +1,11 @@
 using Canteen.Contacts.Food;
 using Canteen.Models;
 using Canteen.Services.Foods;
-using Canteen.ServicesErrors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Canteen.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class FoodController : ControllerBase
+public class FoodController : ApiController
 {
     private readonly IFoodService _foodService;
 
@@ -31,35 +28,25 @@ public class FoodController : ControllerBase
             DateTime.UtcNow
         );
         // TODO: have save to database
-        var response = _foodService.InsertFood(model);
-
-        return CreatedAtAction(nameof(GetFood), new { id = response.Id }, response);
+        var getResult = _foodService.InsertFood(model);
+        return getResult.Match(
+            insert => mapperCreated(model),
+            errs => Problem(errs)
+        );
     }
 
     [HttpGet("{id:guid}")]
     public IActionResult GetFood(Guid id)
     {
-        var getFoodResult = _foodService.GetFood(id);
-        if (getFoodResult.IsError && getFoodResult.FirstError == Errors.Food.NotFound)
-        {
-            return NotFound();
-        }
-        var model = getFoodResult.Value;
-        var response = new FoodResponse(
-            model.Id,
-            model.Name ?? "",
-            model.Description ?? "",
-            model.Price,
-            model.Stock,
-            model.Tags ?? new List<string>(),
-            model.ImageUrl ?? "",
-            model.LastModifiedDateTime
-        );
-        return Ok(response);
+        return _foodService.GetFood(id)
+            .Match<IActionResult>(
+                food => Ok(mapperResponse(food)),
+                errs => Problem(errs)
+            );
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateFood(Guid id, [FromBody] UpsertFoodRequest request)
+    public IActionResult UpsertFood(Guid id, [FromBody] UpsertFoodRequest request)
     {
         var model = new FoodModel(
             id,
@@ -71,16 +58,39 @@ public class FoodController : ControllerBase
             request.ImageUrl,
             DateTime.UtcNow
         );
-        _foodService.UpdateFood(id, model);
-
-        // TODO: return 201 if created
-        return NoContent();
+        var restUp = _foodService.UpdateFood(id, model);
+        return restUp.Match(
+            up => up.IsNewlyCreated ? mapperCreated(model) : NoContent(),
+            errs => Problem(errs)
+        );
     }
 
     [HttpDelete("{id:guid}")]
     public IActionResult DeleteFood(Guid id)
     {
-        _foodService.DeleteFood(id);
-        return NoContent();
+        var rest = _foodService.DeleteFood(id);
+        return rest.Match(
+            delet => NoContent(),
+            errs => Problem(errs)
+        );
+    }
+
+    public static FoodResponse mapperResponse(FoodModel food)
+    {
+        return new FoodResponse(
+            food.Id,
+            food.Name ?? "",
+            food.Description ?? "",
+            food.Price,
+            food.Stock,
+            food.Tags ?? new List<string>(),
+            food.ImageUrl ?? "",
+            food.LastModifiedDateTime
+        );
+    }
+
+    private CreatedAtActionResult mapperCreated(FoodModel model)
+    {
+        return CreatedAtAction(nameof(GetFood), new { id = model.Id }, mapperResponse(model));
     }
 }

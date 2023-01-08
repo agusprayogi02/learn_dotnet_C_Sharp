@@ -1,4 +1,5 @@
-PUT http://localhost:5199/api/Food/ae2ab217-9f4d-4d80-8b23-fe2b86c768e2
+@id=3823e6d0-b31f-4f44-a666-9fe1f0e52b5e
+PUT http://localhost:5199/api/Food/{{id}}
 Content-Type: application/json
 
 {

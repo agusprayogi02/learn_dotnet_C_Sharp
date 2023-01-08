@@ -1,4 +1,3 @@
-using Canteen.Contacts.Food;
 using Canteen.Models;
 using Canteen.ServicesErrors;
 using ErrorOr;
@@ -9,9 +8,10 @@ public class FoodService : IFoodService
 {
     private static readonly Dictionary<Guid, FoodModel> _foods = new();
 
-    public void DeleteFood(Guid id)
+    public ErrorOr<Deleted> DeleteFood(Guid id)
     {
         _foods.Remove(id);
+        return Result.Deleted;
     }
 
     public ErrorOr<FoodModel> GetFood(Guid id)
@@ -23,23 +23,17 @@ public class FoodService : IFoodService
         return Errors.Food.NotFound;
     }
 
-    public FoodResponse InsertFood(FoodModel food)
+    public ErrorOr<Created> InsertFood(FoodModel food)
     {
         _foods.Add(food.Id, food);
-        return new FoodResponse(
-            food.Id,
-            food.Name ?? "",
-            food.Description ?? "",
-            food.Price,
-            food.Stock,
-            food.Tags ?? new List<string>(),
-            food.ImageUrl ?? "",
-            food.LastModifiedDateTime
-        );
+
+        return Result.Created;
     }
 
-    public void UpdateFood(Guid id, FoodModel model)
+    public ErrorOr<UpsertedFood> UpdateFood(Guid id, FoodModel model)
     {
+        var IsNewlyCreated = !_foods.ContainsKey(id);
         _foods[id] = model;
+        return new UpsertedFood(IsNewlyCreated);
     }
 }
