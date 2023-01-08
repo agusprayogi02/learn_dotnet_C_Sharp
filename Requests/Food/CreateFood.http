@@ -1,0 +1,13 @@
+POST http://localhost:5199/api/food
+Content-Type: application/json
+
+{
+    "Name": "Apel",
+    "Description": "Buah yang segar",
+    "Price": 1000,
+    "Stock": 10,
+    "Tags": [
+        "Buah"
+    ],
+    "ImageUrl": "X-Http-Method-Override"
+}

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Canteen", "Canteen\Canteen.csproj", "{DBFFFC91-8FF7-4724-B9E0-3AFE7E7B0A84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Canteen.Contacts", "Canteen.Contacts\Canteen.Contacts.csproj", "{2E23B3A2-EA26-4A50-B796-66B48AC8A83D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBFFFC91-8FF7-4724-B9E0-3AFE7E7B0A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBFFFC91-8FF7-4724-B9E0-3AFE7E7B0A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBFFFC91-8FF7-4724-B9E0-3AFE7E7B0A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBFFFC91-8FF7-4724-B9E0-3AFE7E7B0A84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E23B3A2-EA26-4A50-B796-66B48AC8A83D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E23B3A2-EA26-4A50-B796-66B48AC8A83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E23B3A2-EA26-4A50-B796-66B48AC8A83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E23B3A2-EA26-4A50-B796-66B48AC8A83D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
