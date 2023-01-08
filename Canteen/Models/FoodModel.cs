@@ -1,6 +1,6 @@
 namespace Canteen.Models;
 
-public class Food
+public class FoodModel
 {
     public Guid Id { get; }
     public string? Name { get; }
@@ -11,7 +11,7 @@ public class Food
     public string? ImageUrl { get; }
     public DateTime LastModifiedDateTime { get; }
 
-    public Food(Guid id, string? name, string? description, int price, int stock, List<string>? tags, string? imageUrl, DateTime lastModifiedDateTime)
+    public FoodModel(Guid id, string? name, string? description, int price, int stock, List<string>? tags, string? imageUrl, DateTime lastModifiedDateTime)
     {
         // enforce invariants
         Id = id;

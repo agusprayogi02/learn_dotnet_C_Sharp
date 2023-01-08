@@ -1,8 +1,8 @@
-PUT http://localhost:5199/api/food/001313-313-4141-4141
+PUT http://localhost:5199/api/Food/ae2ab217-9f4d-4d80-8b23-fe2b86c768e2
 Content-Type: application/json
 
 {
-    "Name": "Apel",
+    "Name": "Apel Manis",
     "Description": "Buah yang segar",
     "Price": 1000,
     "Stock": 10,
