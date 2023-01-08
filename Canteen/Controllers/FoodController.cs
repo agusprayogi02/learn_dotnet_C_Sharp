@@ -1,6 +1,7 @@
 using Canteen.Contacts.Food;
 using Canteen.Models;
 using Canteen.Services.Foods;
+using Canteen.ServicesErrors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Canteen.Controllers;
@@ -38,7 +39,12 @@ public class FoodController : ControllerBase
     [HttpGet("{id:guid}")]
     public IActionResult GetFood(Guid id)
     {
-        var model = _foodService.GetFood(id);
+        var getFoodResult = _foodService.GetFood(id);
+        if (getFoodResult.IsError && getFoodResult.FirstError == Errors.Food.NotFound)
+        {
+            return NotFound();
+        }
+        var model = getFoodResult.Value;
         var response = new FoodResponse(
             model.Id,
             model.Name ?? "",

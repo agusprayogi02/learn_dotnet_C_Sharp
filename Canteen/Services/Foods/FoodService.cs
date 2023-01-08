@@ -1,5 +1,7 @@
 using Canteen.Contacts.Food;
 using Canteen.Models;
+using Canteen.ServicesErrors;
+using ErrorOr;
 
 namespace Canteen.Services.Foods;
 
@@ -12,9 +14,13 @@ public class FoodService : IFoodService
         _foods.Remove(id);
     }
 
-    public FoodModel GetFood(Guid id)
+    public ErrorOr<FoodModel> GetFood(Guid id)
     {
-        return _foods[id];
+        if (_foods.TryGetValue(id, out var food))
+        {
+            return food;
+        }
+        return Errors.Food.NotFound;
     }
 
     public FoodResponse InsertFood(FoodModel food)
