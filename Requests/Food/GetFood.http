@@ -1,3 +1,0 @@
-@foodId=3823e6d0-b31f-4f44-a666-9fe1f0e52b5e
-GET http://localhost:5199/api/food/{{foodId}}
-Content-Type: application/json

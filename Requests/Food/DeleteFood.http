@@ -1,2 +1,0 @@
-@id=3823e6d0-b31f-4f44-a666-9fe1f0e52b5e
-DELETE http://localhost:5199/api/food/{{id}} HTTP/1.1
