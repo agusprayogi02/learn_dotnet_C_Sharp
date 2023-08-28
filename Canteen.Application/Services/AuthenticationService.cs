@@ -19,7 +19,7 @@ public class AuthenticationService : IAuthenticationService
 
         // Create JWT Token
         var userId = Guid.NewGuid();
-        var token = _jwtTokenGenerator.GeneratorToken(userId, firstName, lastName);
+        var token = _jwtTokenGenerator.GeneratorToken(userId, email, firstName, lastName);
 
         return new AuthResult(
             userId,
@@ -33,13 +33,13 @@ public class AuthenticationService : IAuthenticationService
     public AuthResult Login(string email, string password)
     {
         var userId = Guid.NewGuid();
-        var token = _jwtTokenGenerator.GeneratorToken(userId, "", "");
+        var token = _jwtTokenGenerator.GeneratorToken(userId, email, "", "");
         return new AuthResult(
             userId,
             "FirstName",
             "LastName",
             email,
-            "Token Nich"
+            token
         );
     }
 }
