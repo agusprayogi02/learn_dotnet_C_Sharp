@@ -3,15 +3,26 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Canteen.Application.Common.Interfaces.Authentication;
+using Canteen.Application.Common.Interfaces.Services;
+using Microsoft.Extensions.Options;
 
 namespace Canteen.Infrastructure.Authentication;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
+    private readonly JwtSettings _settings;
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    public JwtTokenGenerator(IOptions<JwtSettings> settings, IDateTimeProvider dateTimeProvider)
+    {
+        _settings = settings.Value;
+        _dateTimeProvider = dateTimeProvider;
+    }
+
     public string GeneratorToken(Guid userId, string email, string firstname, string lastName)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var expired = DateTime.UtcNow.AddDays(1);
+        var expired = _dateTimeProvider.UtcNow.AddMinutes(_settings.ExpiryMinutes);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
@@ -24,9 +35,11 @@ public class JwtTokenGenerator : IJwtTokenGenerator
                 new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             }),
+            Issuer = _settings.Issuer,
+            Audience = _settings.Audience,
             Expires = expired,
             SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey("super-secret-key"u8.ToArray()),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret)),
                 SecurityAlgorithms.Aes128CbcHmacSha256
             )
         };
